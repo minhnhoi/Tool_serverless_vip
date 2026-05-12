@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Manage from "./pages/Manage";
@@ -26,18 +26,72 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ProtectedRoute><Shell><Dashboard /></Shell></ProtectedRoute>} />
-            <Route path="/manage" element={<ProtectedRoute><Shell><Manage /></Shell></ProtectedRoute>} />
-            <Route path="/jobs/:id" element={<ProtectedRoute><Shell><JobDetail /></Shell></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><Shell><Settings /></Shell></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Shell><Profile /></Shell></ProtectedRoute>} />
-            <Route path="/about" element={<ProtectedRoute><Shell><About /></Shell></ProtectedRoute>} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <Dashboard />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/manage"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <Manage />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/jobs/:id"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <JobDetail />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <Settings />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <Profile />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <ProtectedRoute>
+                  <Shell>
+                    <About />
+                  </Shell>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </AuthProvider>
     </ThemeProvider>
   );
