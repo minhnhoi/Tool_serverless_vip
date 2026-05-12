@@ -1,8 +1,8 @@
-
 {
   "name": "cron-monitor-frontend",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://minhnhoi.github.io/Tool_serverless_vip/",
   "dependencies": {
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
@@ -14,9 +14,13 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.12.7"
   },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [

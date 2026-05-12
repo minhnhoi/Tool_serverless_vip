@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE = "http://localhost:5000";
+export const API_BASE = "https://tool-serverless-backend.onrender.com";
 
 const api = axios.create({ baseURL: API_BASE });
 
@@ -21,7 +21,7 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(err);
-  }
+  },
 );
 
 export default api;
