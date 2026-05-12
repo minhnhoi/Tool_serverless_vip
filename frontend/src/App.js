@@ -25,10 +25,11 @@ function Shell({ children }) {
 export default function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <HashRouter>
+      <HashRouter>
+        <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
+
             <Route
               path="/"
               element={
@@ -39,6 +40,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/manage"
               element={
@@ -49,6 +51,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/jobs/:id"
               element={
@@ -59,6 +62,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/settings"
               element={
@@ -69,6 +73,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/profile"
               element={
@@ -79,6 +84,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
               path="/about"
               element={
@@ -89,10 +95,11 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </HashRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </HashRouter>
     </ThemeProvider>
   );
 }
