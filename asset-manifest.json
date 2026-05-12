@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Tool_serverless_vip/static/css/main.506042ba.css",
+    "main.js": "/Tool_serverless_vip/static/js/main.1537631b.js",
+    "index.html": "/Tool_serverless_vip/index.html",
+    "main.506042ba.css.map": "/Tool_serverless_vip/static/css/main.506042ba.css.map",
+    "main.1537631b.js.map": "/Tool_serverless_vip/static/js/main.1537631b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.506042ba.css",
+    "static/js/main.1537631b.js"
+  ]
+}
