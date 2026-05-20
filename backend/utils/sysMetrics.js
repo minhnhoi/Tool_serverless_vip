@@ -1,7 +1,3 @@
-// utils/sysMetrics.js
-// Reads real CPU / Memory / Temperature / Uptime metrics from the OS.
-// Falls back to simulated values when a metric is unavailable on the host.
-
 const os = require("os");
 const fs = require("fs");
 
@@ -36,7 +32,6 @@ function memUsage() {
 }
 
 function readTemperature() {
-  // Best-effort temperature read (Linux thermal zones).
   try {
     const candidates = [
       "/sys/class/thermal/thermal_zone0/temp",
@@ -47,14 +42,12 @@ function readTemperature() {
         const raw = fs.readFileSync(p, "utf8").trim();
         const n = Number(raw);
         if (!Number.isNaN(n) && n > 0) {
-          return n > 1000 ? n / 1000 : n; // millidegrees → degrees
+          return n > 1000 ? n / 1000 : n;
         }
       }
     }
-  } catch {
-    /* ignored */
-  }
-  // Synthetic temperature: warm with cpu load + small jitter.
+  } catch {}
+
   const base = 38 + cpuUsage() * 18;
   const jitter = (Math.random() - 0.5) * 2.5;
   return Number((base + jitter).toFixed(1));

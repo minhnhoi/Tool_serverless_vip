@@ -10,14 +10,16 @@ export default function Sidebar() {
   const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
 
-  // Close drawer when route changes
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
-  // Lock scroll when drawer is open on mobile
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   const link = (to, label, icon, testId) => (
@@ -36,18 +38,28 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile top bar */}
       <div className="tp-mobile-bar">
         <div className="brand">
-          <div className="tp-brand-mark"><span className="dot" /></div>
+          <div className="tp-brand-mark">
+            <span className="dot" />
+          </div>
           <div>
             <div style={{ fontSize: 14, fontWeight: 800 }}>Tool Ping</div>
-            <div style={{ fontSize: 10, color: "var(--muted)", letterSpacing: "0.14em", textTransform: "uppercase" }}>Solaris</div>
+            <div
+              style={{
+                fontSize: 10,
+                color: "var(--muted)",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              Solaris
+            </div>
           </div>
         </div>
         <button
           className="tp-hamburger"
-          onClick={() => setOpen(v => !v)}
+          onClick={() => setOpen((v) => !v)}
           data-testid="mobile-menu-toggle"
           aria-label="Toggle menu"
         >
@@ -62,7 +74,9 @@ export default function Sidebar() {
 
       <aside className={"tp-sidebar " + (open ? "open" : "")}>
         <div className="tp-brand">
-          <div className="tp-brand-mark"><span className="dot" /></div>
+          <div className="tp-brand-mark">
+            <span className="dot" />
+          </div>
           <div className="tp-brand-name">
             Tool Ping
             <small>Solaris observatory</small>
@@ -75,7 +89,9 @@ export default function Sidebar() {
           {link("/manage", "Manage Links", "list", "nav-manage")}
         </nav>
 
-        <div className="tp-nav-section" style={{ marginTop: 14 }}>Account</div>
+        <div className="tp-nav-section" style={{ marginTop: 14 }}>
+          Account
+        </div>
         <nav className="tp-nav">
           {link("/profile", "Tài khoản", "user", "nav-profile")}
           {link("/settings", "Thiết lập", "settings", "nav-settings")}

@@ -5,7 +5,6 @@ import { useAuth } from "../auth/AuthContext";
 import Icon from "../components/Icon";
 import TrollOverlay from "../components/TrollOverlay";
 
-/* ---------- Floating-label field ---------- */
 function FloatField({
   id,
   label,
@@ -17,14 +16,20 @@ function FloatField({
   maxLength,
   testid,
   rightSlot,
-  hint
+  hint,
 }) {
   const [focused, setFocused] = useState(false);
   const lifted = focused || (value && value.length > 0);
 
   return (
-    <div className={`tp-float ${lifted ? "is-lifted" : ""} ${focused ? "is-focused" : ""}`}>
-      {icon && <span className="tp-float-ico"><Icon name={icon} size={16} /></span>}
+    <div
+      className={`tp-float ${lifted ? "is-lifted" : ""} ${focused ? "is-focused" : ""}`}
+    >
+      {icon && (
+        <span className="tp-float-ico">
+          <Icon name={icon} size={16} />
+        </span>
+      )}
       <input
         id={id}
         className="tp-float-input"
@@ -36,11 +41,11 @@ function FloatField({
         autoComplete={autoComplete}
         maxLength={maxLength}
         data-testid={testid}
-        // Empty placeholder is required so the floating animation can use
-        // the :placeholder-shown pseudo-class as a fallback.
         placeholder=" "
       />
-      <label htmlFor={id} className="tp-float-label">{label}</label>
+      <label htmlFor={id} className="tp-float-label">
+        {label}
+      </label>
       {rightSlot}
       {hint && <div className="tp-float-hint">{hint}</div>}
     </div>
@@ -61,14 +66,12 @@ function scorePassword(pw) {
 }
 
 export default function Login() {
-  const [mode, setMode] = useState("login"); // "login" | "register"
+  const [mode, setMode] = useState("login");
 
-  // login fields
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
 
-  // register fields
   const [regName, setRegName] = useState("");
   const [regUsername, setRegUsername] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -109,14 +112,20 @@ export default function Login() {
     e.preventDefault();
     setErr("");
     setInfo("");
-    if (regName.trim().length < 2) return setErr("Họ tên phải có ít nhất 2 ký tự.");
+    if (regName.trim().length < 2)
+      return setErr("Họ tên phải có ít nhất 2 ký tự.");
     if (!/^[a-zA-Z0-9_.-]{3,32}$/.test(regUsername))
       return setErr("Tên đăng nhập 3–32 ký tự, chỉ chữ/số/_.-");
-    if (regPassword.length < 8) return setErr("Mật khẩu phải có ít nhất 8 ký tự.");
-    if (!/[A-Z]/.test(regPassword)) return setErr("Mật khẩu phải có ít nhất 1 chữ in hoa.");
-    if (!/[a-z]/.test(regPassword)) return setErr("Mật khẩu phải có ít nhất 1 chữ thường.");
-    if (!/[0-9]/.test(regPassword)) return setErr("Mật khẩu phải có ít nhất 1 chữ số.");
-    if (regPassword !== regConfirm) return setErr("Mật khẩu xác nhận không khớp.");
+    if (regPassword.length < 8)
+      return setErr("Mật khẩu phải có ít nhất 8 ký tự.");
+    if (!/[A-Z]/.test(regPassword))
+      return setErr("Mật khẩu phải có ít nhất 1 chữ in hoa.");
+    if (!/[a-z]/.test(regPassword))
+      return setErr("Mật khẩu phải có ít nhất 1 chữ thường.");
+    if (!/[0-9]/.test(regPassword))
+      return setErr("Mật khẩu phải có ít nhất 1 chữ số.");
+    if (regPassword !== regConfirm)
+      return setErr("Mật khẩu xác nhận không khớp.");
     if (!regAgree) return setErr("Bạn phải đồng ý với thỏa thuận sử dụng.");
 
     setLoading(true);
@@ -125,9 +134,9 @@ export default function Login() {
         name: regName.trim(),
         username: regUsername.trim(),
         password: regPassword,
-        agreeTerms: regAgree
+        agreeTerms: regAgree,
       });
-      // Pre-fill the login form with the new username and switch tab.
+
       setUsername(regUsername.trim());
       setPassword("");
       setRegName("");
@@ -145,7 +154,14 @@ export default function Login() {
 
   return (
     <div className="tp-login">
-      {troll && <TrollOverlay onClose={() => { setTroll(false); setPassword(""); }} />}
+      {troll && (
+        <TrollOverlay
+          onClose={() => {
+            setTroll(false);
+            setPassword("");
+          }}
+        />
+      )}
 
       <AnimatePresence>
         {loading && (
@@ -159,7 +175,14 @@ export default function Login() {
           >
             <div className="tp-loader-stars" aria-hidden="true">
               {Array.from({ length: 26 }).map((_, i) => (
-                <span key={i} style={{ left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`, animationDelay: `${(i * 0.13).toFixed(2)}s` }} />
+                <span
+                  key={i}
+                  style={{
+                    left: `${(i * 37) % 100}%`,
+                    top: `${(i * 53) % 100}%`,
+                    animationDelay: `${(i * 0.13).toFixed(2)}s`,
+                  }}
+                />
               ))}
             </div>
             <div className="tp-loader-orb">
@@ -170,18 +193,29 @@ export default function Login() {
               <div className="core" />
             </div>
             <div className="tp-loader-text">
-              <span>{mode === "register" ? "Đang khởi tạo tài khoản" : "Đang xác thực"}</span>
-              <div className="dots"><i /><i /><i /></div>
+              <span>
+                {mode === "register"
+                  ? "Đang khởi tạo tài khoản"
+                  : "Đang xác thực"}
+              </span>
+              <div className="dots">
+                <i />
+                <i />
+                <i />
+              </div>
             </div>
-            <div className="tp-loader-bar"><div /></div>
+            <div className="tp-loader-bar">
+              <div />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* HERO */}
       <section className="tp-login-hero">
         <div className="tp-login-brand">
-          <div className="tp-brand-mark"><span className="dot" /></div>
+          <div className="tp-brand-mark">
+            <span className="dot" />
+          </div>
           <div className="tp-brand-name" style={{ color: "#fff" }}>
             Tool Ping
             <small style={{ color: "#a89887" }}>Solaris observatory</small>
@@ -207,19 +241,31 @@ export default function Login() {
           transition={{ duration: 0.5 }}
         >
           <h1>
-            Quan sát mọi <span className="accent">endpoint</span><br />
+            Quan sát mọi <span className="accent">endpoint</span>
+            <br />
             như một <span className="accent">đài thiên văn</span>.
           </h1>
           <p>
             Theo dõi hàng loạt URL & cron-job, nhận trạng thái thời gian thực,
-            biểu đồ uptime và cảnh báo khi có sự cố — tất cả trong một dashboard duy nhất.
+            biểu đồ uptime và cảnh báo khi có sự cố — tất cả trong một dashboard
+            duy nhất.
           </p>
 
           <ul className="tp-login-features">
-            <li><Icon name="check" size={16} /> Ping định kỳ từ 1 phút đến 24 giờ</li>
-            <li><Icon name="check" size={16} /> Thống kê uptime & response time chi tiết</li>
-            <li><Icon name="check" size={16} /> Import / export hàng loạt qua CSV</li>
-            <li><Icon name="check" size={16} /> Tài khoản cá nhân & quyền sở hữu link riêng</li>
+            <li>
+              <Icon name="check" size={16} /> Ping định kỳ từ 1 phút đến 24 giờ
+            </li>
+            <li>
+              <Icon name="check" size={16} /> Thống kê uptime & response time
+              chi tiết
+            </li>
+            <li>
+              <Icon name="check" size={16} /> Import / export hàng loạt qua CSV
+            </li>
+            <li>
+              <Icon name="check" size={16} /> Tài khoản cá nhân & quyền sở hữu
+              link riêng
+            </li>
           </ul>
         </motion.div>
 
@@ -228,9 +274,7 @@ export default function Login() {
         </div>
       </section>
 
-      {/* FORM */}
       <section className="tp-login-panel">
-        {/* Ambient decorations: starfield + orbital ring + glow */}
         <div className="tp-panel-deco" aria-hidden="true">
           <div className="tp-panel-aurora">
             <span className="blob b1" />
@@ -247,7 +291,7 @@ export default function Login() {
                   left: `${(i * 53) % 100}%`,
                   top: `${(i * 31) % 100}%`,
                   animationDelay: `${(i * 0.21).toFixed(2)}s`,
-                  animationDuration: `${2.4 + ((i * 13) % 30) / 10}s`
+                  animationDuration: `${2.4 + ((i * 13) % 30) / 10}s`,
                 }}
               />
             ))}
@@ -292,16 +336,27 @@ export default function Login() {
               type="button"
               role="tab"
               className={mode === "login" ? "active" : ""}
-              onClick={() => { setMode("login"); setErr(""); }}
+              onClick={() => {
+                setMode("login");
+                setErr("");
+              }}
               data-testid="tab-login"
-            >Đăng nhập</button>
+            >
+              Đăng nhập
+            </button>
             <button
               type="button"
               role="tab"
               className={mode === "register" ? "active" : ""}
-              onClick={() => { setMode("register"); setErr(""); setInfo(""); }}
+              onClick={() => {
+                setMode("register");
+                setErr("");
+                setInfo("");
+              }}
               data-testid="tab-register"
-            >Đăng ký</button>
+            >
+              Đăng ký
+            </button>
           </div>
 
           <h3 style={{ marginTop: 22 }}>
@@ -362,7 +417,7 @@ export default function Login() {
                   <button
                     type="button"
                     className="tp-eye"
-                    onClick={() => setShowPw(v => !v)}
+                    onClick={() => setShowPw((v) => !v)}
                     data-testid="toggle-password"
                     aria-label="Hiện/Ẩn mật khẩu"
                   >
@@ -382,7 +437,8 @@ export default function Login() {
               </button>
 
               <div className="tp-login-hint">
-                Chưa có tài khoản? Bấm tab <b>Đăng ký</b> ở trên hoặc <b>admin / admin1234567</b>.
+                Chưa có tài khoản? Bấm tab <b>Đăng ký</b> ở trên hoặc{" "}
+                <b>admin / admin1234567</b>.
               </div>
             </form>
           ) : (
@@ -401,12 +457,13 @@ export default function Login() {
                 id="reg-username"
                 label="Tên đăng nhập"
                 value={regUsername}
-                onChange={(e) => setRegUsername(e.target.value.replace(/\s+/g, ""))}
+                onChange={(e) =>
+                  setRegUsername(e.target.value.replace(/\s+/g, ""))
+                }
                 icon="user"
                 autoComplete="username"
                 maxLength={32}
                 testid="register-username"
-  
               />
 
               <FloatField
@@ -422,7 +479,7 @@ export default function Login() {
                   <button
                     type="button"
                     className="tp-eye"
-                    onClick={() => setShowRegPw(v => !v)}
+                    onClick={() => setShowRegPw((v) => !v)}
                     aria-label="Hiện/Ẩn mật khẩu"
                   >
                     <Icon name={showRegPw ? "eyeOff" : "eye"} size={16} />
@@ -433,7 +490,11 @@ export default function Login() {
               {regPassword && (
                 <div className="tp-pw-strength" data-testid="pw-strength">
                   <div className={`tp-pw-bars s${pwStrength.score}`}>
-                    <i /><i /><i /><i /><i />
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                    <i />
                   </div>
                   <div className="tp-pw-label">{pwStrength.label}</div>
                 </div>
@@ -461,8 +522,12 @@ export default function Login() {
                   data-testid="register-agree"
                 />
                 <span>
-                  Tôi đồng ý với <a href="#terms" onClick={(e) => e.preventDefault()}>điều khoản sử dụng</a> và
-                  cam kết không lạm dụng hệ thống để spam, tấn công hoặc theo dõi trái phép.
+                  Tôi đồng ý với{" "}
+                  <a href="#terms" onClick={(e) => e.preventDefault()}>
+                    điều khoản sử dụng
+                  </a>{" "}
+                  và cam kết không lạm dụng hệ thống để spam, tấn công hoặc theo
+                  dõi trái phép.
                 </span>
               </label>
 
@@ -477,14 +542,13 @@ export default function Login() {
               </button>
 
               <div className="tp-login-hint">
-                Sau khi tạo xong, <b>hệ thống</b> sẽ chuyển về màn hình <b style={{ color: "#ff6b78" }}>Đăng nhập</b>.
-        
+                Sau khi tạo xong, <b>hệ thống</b> sẽ chuyển về màn hình{" "}
+                <b style={{ color: "#ff6b78" }}>Đăng nhập</b>.
               </div>
             </form>
           )}
         </motion.div>
 
-        {/* Stats strip + helper links below the card */}
         <motion.div
           className="tp-panel-stats"
           initial={{ opacity: 0, y: 10 }}
@@ -493,15 +557,22 @@ export default function Login() {
           aria-hidden="true"
         >
           <div className="tp-panel-stat">
-            <div className="val"><span className="tick">●</span> 99.98<span className="pct">%</span></div>
+            <div className="val">
+              <span className="tick">●</span> 99.98
+              <span className="pct">%</span>
+            </div>
             <div className="lab">Uptime trung bình</div>
           </div>
           <div className="tp-panel-stat">
-            <div className="val">1<span className="sep">′</span>00<span className="sep">″</span></div>
+            <div className="val">
+              1<span className="sep">′</span>00<span className="sep">″</span>
+            </div>
             <div className="lab">Chu kỳ ping nhỏ nhất</div>
           </div>
           <div className="tp-panel-stat">
-            <div className="val">24<span className="sep">/</span>7</div>
+            <div className="val">
+              24<span className="sep">/</span>7
+            </div>
             <div className="lab">Cảnh báo thời gian thực</div>
           </div>
         </motion.div>

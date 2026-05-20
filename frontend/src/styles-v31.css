@@ -1,10 +1,3 @@
-/* =========================================================================
-   Add-on styles for v3.1: register tabs, terms, login loader, creator
-   badges, masked URL, ownership chips. Imported AFTER styles.css so it
-   wins on cascading.
-   ========================================================================= */
-
-/* ----- Auth tabs (Login / Register) ----- */
 .tp-auth-tabs {
   display: inline-flex;
   padding: 4px;
@@ -25,17 +18,21 @@
   font-size: 13px;
   font-family: inherit;
   cursor: pointer;
-  transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
   letter-spacing: -0.005em;
 }
-.tp-auth-tabs button:hover { color: var(--text); }
+.tp-auth-tabs button:hover {
+  color: var(--text);
+}
 .tp-auth-tabs button.active {
   background: var(--grad-signal);
   color: #1a0a05;
   box-shadow: 0 8px 22px -10px rgba(255, 125, 94, 0.55);
 }
 
-/* ----- Terms checkbox ----- */
 .tp-terms {
   display: flex;
   align-items: flex-start;
@@ -48,7 +45,8 @@
 }
 .tp-terms input[type="checkbox"] {
   appearance: none;
-  width: 18px; height: 18px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   margin-top: 2px;
   border: 1.5px solid var(--border-hi);
@@ -56,9 +54,13 @@
   background: var(--panel-solid-2);
   cursor: pointer;
   position: relative;
-  transition: border-color .15s ease, background .15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
-.tp-terms input[type="checkbox"]:hover { border-color: var(--accent); }
+.tp-terms input[type="checkbox"]:hover {
+  border-color: var(--accent);
+}
 .tp-terms input[type="checkbox"]:checked {
   background: var(--grad-signal);
   border-color: transparent;
@@ -66,8 +68,10 @@
 .tp-terms input[type="checkbox"]:checked::after {
   content: "";
   position: absolute;
-  left: 5px; top: 1px;
-  width: 5px; height: 10px;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
   border-right: 2px solid #1a0a05;
   border-bottom: 2px solid #1a0a05;
   transform: rotate(45deg);
@@ -78,56 +82,102 @@
   text-underline-offset: 2px;
 }
 
-/* ----- Login waiting overlay (full-screen, on top of split layout) ----- */
 .tp-login-loader {
-  position: fixed; inset: 0;
+  position: fixed;
+  inset: 0;
   z-index: 250;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 22px;
   padding: 24px;
   background:
-    radial-gradient(900px 600px at 30% 30%, rgba(255, 125, 94, 0.18), transparent 60%),
-    radial-gradient(700px 500px at 80% 80%, rgba(79, 209, 197, 0.18), transparent 60%),
-    radial-gradient(600px 400px at 50% 50%, rgba(251, 197, 94, 0.12), transparent 60%),
+    radial-gradient(
+      900px 600px at 30% 30%,
+      rgba(255, 125, 94, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      700px 500px at 80% 80%,
+      rgba(79, 209, 197, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      600px 400px at 50% 50%,
+      rgba(251, 197, 94, 0.12),
+      transparent 60%
+    ),
     rgba(7, 4, 14, 0.86);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
 }
-.tp-loader-stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.tp-loader-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
 .tp-loader-stars span {
   position: absolute;
-  width: 2px; height: 2px;
+  width: 2px;
+  height: 2px;
   background: #ffe6c8;
   border-radius: 50%;
   opacity: 0.7;
   animation: tp-loader-twinkle 2.6s ease-in-out infinite;
 }
 @keyframes tp-loader-twinkle {
-  0%, 100% { opacity: 0.15; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px #ffd9b2; }
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+    box-shadow: 0 0 8px #ffd9b2;
+  }
 }
 
 .tp-loader-orb {
   position: relative;
-  width: 200px; height: 200px;
+  width: 200px;
+  height: 200px;
 }
 .tp-loader-orb .ring {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 125, 94, 0.32);
   animation: tp-loader-pulse 2.2s ease-out infinite;
 }
-.tp-loader-orb .ring.r2 { inset: 16%; border-color: rgba(251, 197, 94, 0.42); animation-delay: 0.35s; }
-.tp-loader-orb .ring.r3 { inset: 32%; border-color: rgba(79, 209, 197, 0.50); animation-delay: 0.7s; }
+.tp-loader-orb .ring.r2 {
+  inset: 16%;
+  border-color: rgba(251, 197, 94, 0.42);
+  animation-delay: 0.35s;
+}
+.tp-loader-orb .ring.r3 {
+  inset: 32%;
+  border-color: rgba(79, 209, 197, 0.5);
+  animation-delay: 0.7s;
+}
 .tp-loader-orb .sweep {
-  position: absolute; inset: 0; border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 125, 94, 0.55) 36deg, transparent 72deg);
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 125, 94, 0.55) 36deg,
+    transparent 72deg
+  );
   animation: tp-spin 1.6s linear infinite;
   mix-blend-mode: screen;
 }
 .tp-loader-orb .core {
-  position: absolute; inset: 42%;
+  position: absolute;
+  inset: 42%;
   border-radius: 50%;
   background: var(--grad-signal);
   box-shadow:
@@ -136,13 +186,29 @@
   animation: tp-loader-core 1.4s ease-in-out infinite;
 }
 @keyframes tp-loader-pulse {
-  0% { transform: scale(0.86); opacity: 0.7; }
-  60% { transform: scale(1.08); opacity: 0.15; }
-  100% { transform: scale(0.86); opacity: 0.7; }
+  0% {
+    transform: scale(0.86);
+    opacity: 0.7;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(0.86);
+    opacity: 0.7;
+  }
 }
 @keyframes tp-loader-core {
-  0%, 100% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.15); filter: brightness(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.15);
+    filter: brightness(1.2);
+  }
 }
 
 .tp-loader-text {
@@ -157,18 +223,33 @@
   position: relative;
   z-index: 2;
 }
-.tp-loader-text .dots { display: inline-flex; gap: 4px; }
+.tp-loader-text .dots {
+  display: inline-flex;
+  gap: 4px;
+}
 .tp-loader-text .dots i {
-  width: 5px; height: 5px;
+  width: 5px;
+  height: 5px;
   background: var(--sig-2);
   border-radius: 50%;
   animation: tp-loader-dot 1.1s ease-in-out infinite;
 }
-.tp-loader-text .dots i:nth-child(2) { animation-delay: 0.18s; }
-.tp-loader-text .dots i:nth-child(3) { animation-delay: 0.36s; }
+.tp-loader-text .dots i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.tp-loader-text .dots i:nth-child(3) {
+  animation-delay: 0.36s;
+}
 @keyframes tp-loader-dot {
-  0%, 100% { opacity: 0.25; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-3px); }
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 .tp-loader-bar {
@@ -189,12 +270,17 @@
   box-shadow: 0 0 14px rgba(255, 125, 94, 0.55);
 }
 @keyframes tp-loader-slide {
-  0% { transform: translateX(-110%); }
-  50% { transform: translateX(60%); }
-  100% { transform: translateX(260%); }
+  0% {
+    transform: translateX(-110%);
+  }
+  50% {
+    transform: translateX(60%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
 }
 
-/* ----- Creator badge on job cards ----- */
 .tp-job-head {
   display: flex;
   flex-wrap: wrap;
@@ -202,7 +288,9 @@
   gap: 10px;
 }
 .tp-creator-badge {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 3px 10px;
   border-radius: 999px;
   font-size: 11.5px;
@@ -213,7 +301,9 @@
   background: var(--panel-hi);
   backdrop-filter: blur(8px);
 }
-.tp-creator-badge svg { opacity: 0.8; }
+.tp-creator-badge svg {
+  opacity: 0.8;
+}
 .tp-creator-badge.is-admin {
   color: #ff4d5e;
   font-weight: 800;
@@ -226,15 +316,20 @@
 .tp-creator-badge.is-user {
   color: #5fc7ff;
   border-color: rgba(95, 199, 255, 0.35);
-  background: rgba(95, 199, 255, 0.10);
+  background: rgba(95, 199, 255, 0.1);
 }
 
-[data-theme="light"] .tp-creator-badge.is-admin { color: #c41a2c; }
-[data-theme="light"] .tp-creator-badge.is-user  { color: #1f6ea8; }
+[data-theme="light"] .tp-creator-badge.is-admin {
+  color: #c41a2c;
+}
+[data-theme="light"] .tp-creator-badge.is-user {
+  color: #1f6ea8;
+}
 
-/* Read-only chip for non-owners */
 .tp-readonly-hint {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 12px;
   border-radius: 10px;
   background: var(--panel-hi);
@@ -245,14 +340,17 @@
   font-weight: 600;
 }
 
-/* Masked URL look (Manage list + JobDetail header) */
 .tp-job-url.masked {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--muted);
   font-style: italic;
   letter-spacing: 0.05em;
 }
-.tp-job-url.masked svg { color: var(--sig-2); }
+.tp-job-url.masked svg {
+  color: var(--sig-2);
+}
 .tp-url-masked {
   color: var(--muted);
   font-style: italic;

@@ -1,14 +1,8 @@
-// utils/pingScheduler.js
-// Per-job ping scheduler. Each job has its OWN timer driven by the
-// `interval` value configured from the frontend (minutes). Replaces the
-// previous "every 1 min master cron" so the cadence honors per-job setup.
-
 const axios = require("axios");
 const Job = require("../models/Job");
 const PingLog = require("../models/PingLog");
 const { log } = require("./colorLogger");
 
-// Map<jobId(string), { timer: NodeJS.Timeout, interval: number }>
 const _timers = new Map();
 
 function _idStr(id) {
@@ -16,8 +10,6 @@ function _idStr(id) {
 }
 
 async function _runPing(jobId) {
-  // Always re-fetch the latest job state so an in-flight reschedule /
-  // pause / delete is honored at execution time.
   const job = await Job.findById(jobId);
   if (!job) {
     unscheduleJob(jobId);
@@ -37,7 +29,8 @@ async function _runPing(jobId) {
       url: job.url,
       method: job.method || "GET",
       timeout: 10000,
-      headers: job.headers && typeof job.headers === "object" ? job.headers : {},
+      headers:
+        job.headers && typeof job.headers === "object" ? job.headers : {},
       validateStatus: () => true,
       responseType: "text",
     });
@@ -49,7 +42,10 @@ async function _runPing(jobId) {
 
     let keywordOk = true;
     if (job.keyword && job.keyword.trim() !== "") {
-      const body = typeof res.data === "string" ? res.data : JSON.stringify(res.data || "");
+      const body =
+        typeof res.data === "string"
+          ? res.data
+          : JSON.stringify(res.data || "");
       keywordOk = body.includes(job.keyword);
       if (!keywordOk) message = `Keyword "${job.keyword}" not found`;
     }
@@ -98,10 +94,6 @@ function unscheduleJob(jobId) {
   }
 }
 
-// Schedule (or reschedule) a single job. If `runNow` is true and the job
-// has never been checked OR the interval has already elapsed since last
-// check, an initial ping is fired immediately, otherwise it waits for the
-// remaining time before the recurring timer kicks in.
 function scheduleJob(job, { runNow = true } = {}) {
   if (!job || !job._id) return;
   const id = _idStr(job._id);
@@ -122,22 +114,21 @@ function scheduleJob(job, { runNow = true } = {}) {
   const armRecurring = () => {
     const t = setInterval(() => {
       _runPing(id).catch((err) =>
-        log.err("ping", `${job.url} → ${err.message || String(err)}`)
+        log.err("ping", `${job.url} → ${err.message || String(err)}`),
       );
     }, intervalMs);
     _timers.set(id, { timer: t, interval: minutes });
   };
 
   if (initialDelay === 0) {
-    // Fire once now, then arm the recurring interval.
     _runPing(id).catch((err) =>
-      log.err("ping", `${job.url} → ${err.message || String(err)}`)
+      log.err("ping", `${job.url} → ${err.message || String(err)}`),
     );
     armRecurring();
   } else {
     const t = setTimeout(() => {
       _runPing(id).catch((err) =>
-        log.err("ping", `${job.url} → ${err.message || String(err)}`)
+        log.err("ping", `${job.url} → ${err.message || String(err)}`),
       );
       armRecurring();
     }, initialDelay);
@@ -147,19 +138,20 @@ function scheduleJob(job, { runNow = true } = {}) {
   log.cron(
     "cron",
     `Scheduled "${job.name || job.url}" every ${minutes} min` +
-      (initialDelay ? ` (next in ${Math.round(initialDelay / 1000)}s)` : " (running now)")
+      (initialDelay
+        ? ` (next in ${Math.round(initialDelay / 1000)}s)`
+        : " (running now)"),
   );
 }
 
 async function startAll() {
-  // Clear any existing timers (defensive on hot reload).
   for (const id of Array.from(_timers.keys())) unscheduleJob(id);
 
   const jobs = await Job.find({ paused: { $ne: true } });
   for (const j of jobs) scheduleJob(j, { runNow: true });
   log.cron(
     "cron",
-    `Ping scheduler armed for ${jobs.length} job(s) — per-job interval from frontend setup`
+    `Ping scheduler armed for ${jobs.length} job(s) — per-job interval from frontend setup`,
   );
 }
 

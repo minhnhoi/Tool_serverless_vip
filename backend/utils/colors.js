@@ -1,7 +1,3 @@
-// utils/colors.js
-// Lightweight ANSI color helpers (no external dependency).
-// Used by the boot banner, animated logger and live metrics dashboard.
-
 const ESC = "\x1b[";
 const RESET = `${ESC}0m`;
 
@@ -19,7 +15,6 @@ const c = {
   blink: wrap(5),
   inverse: wrap(7),
 
-  // basic
   black: wrap(30),
   red: wrap(31),
   green: wrap(32),
@@ -30,7 +25,6 @@ const c = {
   white: wrap(37),
   gray: wrap(90),
 
-  // 256-color neon palette inspired by the dashboard mockup
   neonCyan: fg256(51),
   neonAqua: fg256(45),
   neonGreen: fg256(46),
@@ -48,7 +42,6 @@ const c = {
   fg256,
 };
 
-// Strip ANSI codes (used to compute visible width for centering).
 function strip(str) {
   return String(str).replace(/\x1b\[[0-9;]*m/g, "");
 }
@@ -57,7 +50,6 @@ function visibleLen(str) {
   return strip(str).length;
 }
 
-// Build a horizontal gradient between two RGB colors over a string.
 function gradient(text, [r1, g1, b1], [r2, g2, b2]) {
   const len = Math.max(text.length - 1, 1);
   let out = "";

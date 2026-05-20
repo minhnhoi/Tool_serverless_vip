@@ -1,8 +1,3 @@
-// utils/realtimeBus.js
-// Single in-memory event bus + ring buffers. Used by the WebSocket server,
-// the colored logger, the terminal mirror, and the /api/system/* HTTP
-// endpoints to share state.
-
 const { EventEmitter } = require("events");
 
 class RingBuffer {
@@ -31,11 +26,11 @@ const bus = new EventEmitter();
 bus.setMaxListeners(50);
 
 const buffers = {
-  logs: new RingBuffer(300),       // structured log objects (level, scope, msg)
-  pings: new RingBuffer(500),      // recent ping events
-  metrics: new RingBuffer(180),    // 180 sec of system metrics
-  latency: new RingBuffer(120),    // latency / throughput / error-rate samples
-  terminal: new RingBuffer(1000),  // raw ANSI terminal chunks (replayable)
+  logs: new RingBuffer(300),
+  pings: new RingBuffer(500),
+  metrics: new RingBuffer(180),
+  latency: new RingBuffer(120),
+  terminal: new RingBuffer(1000),
 };
 
 function publishLog(entry) {

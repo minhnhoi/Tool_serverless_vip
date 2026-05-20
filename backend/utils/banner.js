@@ -1,13 +1,7 @@
-// utils/banner.js
-// Super-VIP boot animation. Renders an ASCII title, a colorful boot
-// sequence with progress bars, an audio waveform, and a live system
-// dashboard right inside the terminal.
-
 const os = require("os");
 const { c, gradient, visibleLen } = require("./colors");
 const sys = require("./sysMetrics");
 
-// ---------- ASCII title ----------
 const TITLE = [
   "████████╗ ██████╗  ██████╗ ██╗         ██████╗ ██╗███╗   ██╗ ██████╗ ",
   "╚══██╔══╝██╔═══██╗██╔═══██╗██║         ██╔══██╗██║████╗  ██║██╔════╝ ",
@@ -20,25 +14,43 @@ const TITLE = [
   " ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝██║     █████╗  ███████╗",
   " ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗██║     ██╔══╝  ╚════██║",
   " ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║███████╗███████╗███████║",
-  " ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
+  " ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝",
 ];
 
 const SUB = "S E R V I C E   B A C K E N D";
 
-// ---------- timing helpers ----------
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
-const WAVE_CHARS = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃", "▂"];
+const WAVE_CHARS = [
+  "▁",
+  "▂",
+  "▃",
+  "▄",
+  "▅",
+  "▆",
+  "▇",
+  "█",
+  "▇",
+  "▆",
+  "▅",
+  "▄",
+  "▃",
+  "▂",
+];
 
-// ---------- low-level rendering ----------
 function clear() {
   process.stdout.write("\x1b[2J\x1b[H");
 }
-function hideCursor() { process.stdout.write("\x1b[?25l"); }
-function showCursor() { process.stdout.write("\x1b[?25h"); }
-function rewriteLine(text) { process.stdout.write(`\r\x1b[K${text}`); }
+function hideCursor() {
+  process.stdout.write("\x1b[?25l");
+}
+function showCursor() {
+  process.stdout.write("\x1b[?25h");
+}
+function rewriteLine(text) {
+  process.stdout.write(`\r\x1b[K${text}`);
+}
 
-// ---------- decorative elements ----------
 function topBorder(width = 70) {
   const inner = "═".repeat(width - 2);
   return c.neonCyan(`╔${inner}╗`);
@@ -52,7 +64,13 @@ function frameLine(content, width = 70) {
   const pad = Math.max(0, width - 2 - visible);
   const left = Math.floor(pad / 2);
   const right = pad - left;
-  return c.neonCyan("║") + " ".repeat(left) + content + " ".repeat(right) + c.neonCyan("║");
+  return (
+    c.neonCyan("║") +
+    " ".repeat(left) +
+    content +
+    " ".repeat(right) +
+    c.neonCyan("║")
+  );
 }
 
 function audioWave(width = 64) {
@@ -68,26 +86,30 @@ function progressBar(pct, width = 40) {
   const filled = Math.round(width * pct);
   const empty = width - filled;
   const bar = "█".repeat(filled) + c.gray("░".repeat(empty));
-  return gradient(bar.replace(/\x1b\[[0-9;]*m/g, ""), [0, 220, 130], [0, 200, 255])
-    + " " + c.neonGreen(`${Math.round(pct * 100)}%`);
+  return (
+    gradient(bar.replace(/\x1b\[[0-9;]*m/g, ""), [0, 220, 130], [0, 200, 255]) +
+    " " +
+    c.neonGreen(`${Math.round(pct * 100)}%`)
+  );
 }
 
-// ---------- public renders ----------
 async function printBootSequence() {
   hideCursor();
   clear();
 
   const steps = [
     { label: "Initializing serverless runtime", ms: 220 },
-    { label: "Linking ping micro-engines",      ms: 260 },
-    { label: "Spinning up edge gateway",        ms: 220 },
-    { label: "Calibrating latency probes",      ms: 260 },
-    { label: "Connecting to MongoDB cluster",   ms: 320 },
-    { label: "Activating WebSocket bus",        ms: 220 },
-    { label: "Igniting cron scheduler",         ms: 220 },
+    { label: "Linking ping micro-engines", ms: 260 },
+    { label: "Spinning up edge gateway", ms: 220 },
+    { label: "Calibrating latency probes", ms: 260 },
+    { label: "Connecting to MongoDB cluster", ms: 320 },
+    { label: "Activating WebSocket bus", ms: 220 },
+    { label: "Igniting cron scheduler", ms: 220 },
   ];
 
-  process.stdout.write(c.neonAqua(c.bold("\n  ⚡ Booting Tool Ping Serverless...\n\n")));
+  process.stdout.write(
+    c.neonAqua(c.bold("\n  ⚡ Booting Tool Ping Serverless...\n\n")),
+  );
 
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
@@ -98,13 +120,13 @@ async function printBootSequence() {
       const pct = Math.min(1, (Date.now() - start) / total);
       const sp = c.neonCyan(SPINNER[frame % SPINNER.length]);
       rewriteLine(
-        `  ${sp} ${c.white(step.label.padEnd(34))} ${progressBar(pct, 28)}`
+        `  ${sp} ${c.white(step.label.padEnd(34))} ${progressBar(pct, 28)}`,
       );
       frame++;
       await sleep(40);
     }
     rewriteLine(
-      `  ${c.neonGreen("✓")} ${c.white(step.label.padEnd(34))} ${progressBar(1, 28)}\n`
+      `  ${c.neonGreen("✓")} ${c.white(step.label.padEnd(34))} ${progressBar(1, 28)}\n`,
     );
   }
 
@@ -113,7 +135,7 @@ async function printBootSequence() {
 
 function printTitle() {
   const colored = TITLE.map((row) =>
-    gradient(row, [0, 220, 255], [0, 255, 170])
+    gradient(row, [0, 220, 255], [0, 255, 170]),
   );
   console.log("");
   for (const line of colored) console.log("  " + line);
@@ -132,7 +154,7 @@ function printRunningHeader() {
       c.neonGreen(" ⬢ live ") +
       c.gray("─".repeat(20)) +
       c.neonAqua(" ⬡ realtime ") +
-      c.gray("─".repeat(20))
+      c.gray("─".repeat(20)),
   );
   console.log("");
 }
@@ -198,7 +220,6 @@ async function printAll(info) {
   showCursor();
 }
 
-// ---------- live dashboard (every N seconds) ----------
 function metricBar(ratio, width = 18) {
   const filled = Math.round(width * Math.max(0, Math.min(1, ratio)));
   const empty = width - filled;
@@ -215,10 +236,20 @@ function printLiveDashboard() {
   const tempRatio = Math.max(0, Math.min(1, (m.temperature - 25) / 60));
   const line =
     c.gray("┃ ") +
-    c.neonCyan("CPU ")    + metricBar(cpu)       + c.neonCyan(` ${m.cpu.toFixed(1)}%`) + c.gray("  ┃ ") +
-    c.neonAqua("MEM ")    + metricBar(mem)       + c.neonAqua(` ${m.memory.ratio.toFixed(1)}%`) + c.gray("  ┃ ") +
-    c.neonOrange("TEMP ") + metricBar(tempRatio) + c.neonOrange(` ${m.temperature.toFixed(1)}°C`) + c.gray(" ┃ ") +
-    c.neonGreen("UP ")    + c.neonGreen(`${m.uptime}s`) +
+    c.neonCyan("CPU ") +
+    metricBar(cpu) +
+    c.neonCyan(` ${m.cpu.toFixed(1)}%`) +
+    c.gray("  ┃ ") +
+    c.neonAqua("MEM ") +
+    metricBar(mem) +
+    c.neonAqua(` ${m.memory.ratio.toFixed(1)}%`) +
+    c.gray("  ┃ ") +
+    c.neonOrange("TEMP ") +
+    metricBar(tempRatio) +
+    c.neonOrange(` ${m.temperature.toFixed(1)}°C`) +
+    c.gray(" ┃ ") +
+    c.neonGreen("UP ") +
+    c.neonGreen(`${m.uptime}s`) +
     c.gray(" ┃");
   console.log(line);
 }
